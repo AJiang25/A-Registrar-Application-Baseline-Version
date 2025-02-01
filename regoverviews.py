@@ -2,25 +2,65 @@
 # imports
 import sqlite3
 import textwrap
+import argparse
 
 #-----------------------------------------------------------------------
-def getAllClasses():
+def displayClasses(dept = None, num = None, area = None, title = None):
         sqliteConnection = sqlite3.connect('reg.sqlite')
-        print("Connected to the database")
         curser = sqliteConnection.cursor()
-        curser.execute("SELECT DISTINCT cl.classid, cr.dept, cr.coursenum, c.area, c.title FROM courses c JOIN crosslistings cr ON c.courseid = cr.courseid JOIN classes cl ON c.courseid = cl.courseid ORDER BY cr.dept, cr.coursenum;")
+        query = """
+            SELECT DISTINCT cl.classid, cr.dept, cr.coursenum, c.area, c.title 
+            FROM courses c 
+            JOIN crosslistings cr ON c.courseid = cr.courseid 
+            JOIN classes cl ON c.courseid = cl.courseid
+        """
+
+        conditions = []
+        descriptors = []
+        if dept: 
+            conditions.append("cr.dept LIKE ? ")
+            # descriptor = {dept.lower()}.replace("%", r"\%")
+            # descriptor = {descriptor}.replace("_", r"\_")
+            # descriptors.append(f"%{descriptor}%")
+            descriptors.append(f"%{dept.lower()}%")
+        if num:
+            conditions.append("cr.coursenum LIKE ? ")
+            descriptors.append(f"%{num.lower()}%")
+        if area:
+            conditions.append("c.area LIKE ? ")
+            descriptors.append(f"%{area.lower()}%")
+        if title:
+            conditions.append("c.title LIKE ? ")
+            # descriptor = f"{title.lower()}".replace("%", r"\%")
+            # descriptor = f"{descriptor}".replace("_", r"\_")
+            # descriptors.append(f"%{descriptor}%")
+            descriptors.append(f"%{title.lower()}%")
+
+        query += "WHERE " + " AND ".join(conditions)
+        query += "ORDER BY cr.dept, cr.coursenum;"
+        curser.execute(query, descriptors)
         ans = curser.fetchall()
+
+        print('%5s %4s %6s %4s %s' % ("ClsId", "Dept", "CrsNum", "Area", "Title"))
+        print('%5s %4s %6s %4s %s' % ("-----", "----", "------", "----", "-----"))
+
         for row in ans:
             res = '%5s %4s %6s %4s %s' % (row[0], row[1], row[2], row[3], row[4])
-            print(res)
+            print(textwrap.fill(res, subsequent_indent=" "*23))
+
+
         sqliteConnection.close()       
 
 #-----------------------------------------------------------------------
 def main():
-    getAllClasses()
-    
-    
-    
+    parser = argparse.ArgumentParser(description = 'Registrar application: show overviews of classes')
+    parser.add_argument('-d', type=str, metavar = 'dept', help ='show only those classes whose department contains dept')
+    parser.add_argument('-n', type=str, metavar = 'num', help ='show only those classes whose course number contains num')
+    parser.add_argument('-a', type=str, metavar = 'area', help ='show only those classes whose distrib area contains area')
+    parser.add_argument('-t', type=str, metavar = 'title', help ='show only those classes whose course title contains title')
+    args = parser.parse_args()
+
+    displayClasses(dept = args.d, num = args.n, area = args.a, title = args.t)
     
 #-----------------------------------------------------------------------
 
