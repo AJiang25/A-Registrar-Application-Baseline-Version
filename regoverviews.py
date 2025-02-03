@@ -18,23 +18,21 @@ def displayClasses(dept = None, num = None, area = None, title = None):
         conditions = []
         descriptors = []
         if dept: 
-            conditions.append("cr.dept LIKE ? ")
-            # descriptor = {dept.lower()}.replace("%", r"\%")
-            # descriptor = {descriptor}.replace("_", r"\_")
-            # descriptors.append(f"%{descriptor}%")
-            descriptors.append(f"%{dept.lower()}%")
+            conditions.append("cr.dept LIKE ? ESCAPE '\\'")
+            descriptor = dept.lower().replace("%", r"\%").replace("_", r"\_")
+            descriptors.append(f"%{descriptor}%")
         if num:
-            conditions.append("cr.coursenum LIKE ? ")
-            descriptors.append(f"%{num.lower()}%")
+            conditions.append("cr.coursenum LIKE ? ESCAPE '\\'")
+            descriptor = num.lower().replace("%", r"\%").replace("_", r"\_")
+            descriptors.append(f"%{descriptor}%")
         if area:
-            conditions.append("c.area LIKE ? ")
-            descriptors.append(f"%{area.lower()}%")
+            conditions.append("c.area LIKE ? ESCAPE '\\'")
+            descriptor = area.lower().replace("%", r"\%").replace("_", r"\_")
+            descriptors.append(f"%{descriptor}%")
         if title:
-            conditions.append("c.title LIKE ? ")
-            # descriptor = f"{title.lower()}".replace("%", r"\%")
-            # descriptor = f"{descriptor}".replace("_", r"\_")
-            # descriptors.append(f"%{descriptor}%")
-            descriptors.append(f"%{title.lower()}%")
+            conditions.append("c.title LIKE ? ESCAPE '\\'")
+            descriptor = title.lower().replace("%", r"\%").replace("_", r"\_")
+            descriptors.append(f"%{descriptor}%")
 
         query += "WHERE " + " AND ".join(conditions)
         query += "ORDER BY cr.dept, cr.coursenum;"
