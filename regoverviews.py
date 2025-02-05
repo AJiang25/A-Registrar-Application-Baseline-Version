@@ -7,15 +7,14 @@ import argparse
 
 #-----------------------------------------------------------------------
 def displayClasses(curser, dept = None, num = None, area = None, title = None):   
+        conditions = []
+        descriptors = []
         query = """
             SELECT DISTINCT cl.classid, cr.dept, cr.coursenum, c.area, c.title 
             FROM courses c 
             JOIN crosslistings cr ON c.courseid = cr.courseid 
             JOIN classes cl ON c.courseid = cl.courseid
         """
-
-        conditions = []
-        descriptors = []
         if dept: 
             conditions.append("cr.dept LIKE ? ESCAPE '\\'")
             descriptor = dept.lower().replace("%", r"\%").replace("_", r"\_")
@@ -36,17 +35,12 @@ def displayClasses(curser, dept = None, num = None, area = None, title = None):
             query += "WHERE " + " AND ".join(conditions)
             
         query += "ORDER BY cr.dept ASC, cr.coursenum ASC, cl.classid ASC;"
-        print(query)
         curser.execute(query, descriptors)
         ans = curser.fetchall()
 
         print('%5s %4s %6s %4s %s' % ("ClsId", "Dept", "CrsNum", "Area", "Title"))
         print('%5s %4s %6s %4s %s' % ("-----", "----", "------", "----", "-----"))
 
-        # Within each row, each line must consist of no more than 72 characters, 
-        # not including the newline character.
-        # Within each row, each line must end after a word, not within a word. 
-        # That is, no newline characters may appear within words.
         for row in ans:
             res = '%5s %4s %6s %4s %s' % (row[0], row[1], row[2], row[3], row[4])
             print(textwrap.fill(res, width = 72, break_long_words= False, subsequent_indent=" "*23))
@@ -58,12 +52,6 @@ def main():
     parser.add_argument('-n', type=str, metavar = 'num', help ='show only those classes whose course number contains num')
     parser.add_argument('-a', type=str, metavar = 'area', help ='show only those classes whose distrib area contains area')
     parser.add_argument('-t', type=str, metavar = 'title', help ='show only those classes whose course title contains title')
-        
-    # # Parses the stdin arguments
-    # args = parser.parse_args()
-        
-    # # Calls the displayClasses function 
-    # displayClasses(dept = args.d, num = args.n, area = args.a, title = args.t)
     
     try:
         # Connects to the database and creates a curser connection 

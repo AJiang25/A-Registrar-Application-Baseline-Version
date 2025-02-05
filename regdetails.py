@@ -8,7 +8,11 @@ import argparse
 #-----------------------------------------------------------------------
 
 def displayClassInfo(curser, classid = None): 
-    n=1  
+    query = """
+            
+        """
+    curser.execute(query, classid)
+    ans = curser.fetchall()
 
 
 #-----------------------------------------------------------------------  
