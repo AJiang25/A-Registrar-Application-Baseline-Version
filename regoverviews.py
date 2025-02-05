@@ -47,6 +47,7 @@ def displayClasses(curser, dept = None, num = None, area = None, title = None):
         
 #-----------------------------------------------------------------------
 def main():
+
     parser = argparse.ArgumentParser(description = 'Registrar application: show overviews of classes')
     parser.add_argument('-d', type=str, metavar = 'dept', help ='show only those classes whose department contains dept')
     parser.add_argument('-n', type=str, metavar = 'num', help ='show only those classes whose course number contains num')
@@ -77,5 +78,9 @@ def main():
         print(f"{sys.argv[0]}: {str(e)}", file=sys.stderr) 
         sys.exit(2)
     finally: 
-        if sqliteConnection:
-            sql
+        if sqlLiteConnection:
+            sqliteConnection.close()
+#-----------------------------------------------------------------------
+
+if __name__ == '__main__':
+    main()
