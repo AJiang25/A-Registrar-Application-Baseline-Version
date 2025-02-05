@@ -78,4 +78,9 @@ def main():
         sys.exit(2)
     finally: 
         if sqliteConnection:
-            sql
+            sqliteConnection.close() 
+    
+#-----------------------------------------------------------------------
+
+if __name__ == '__main__':
+    main()
