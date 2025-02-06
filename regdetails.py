@@ -4,6 +4,7 @@ import sys
 import sqlite3
 import textwrap
 import argparse
+import contextlib
 
 #-----------------------------------------------------------------------
 
@@ -74,15 +75,15 @@ def main():
 
     try:
         # Connects to the database and creates a curser connection 
-        sqliteConnection = sqlite3.connect('reg.sqlite')
-        cursor = sqliteConnection.cursor()
+        with sqlite3.connect('reg.sqlite') as connection:
+            with contextlib.closing(connection.cursor()) as cursor:
         
-        # Parses the stdin arguments
-        args = parser.parse_args()
-        
-        # Calls the displayClassInfo function 
-        displayClassInfo(cursor = cursor, classid=sys.argv[1])
-        sys.exit(0)
+                # Parses the stdin arguments
+                args = parser.parse_args()
+                
+                # Calls the displayClassInfo function 
+                displayClassInfo(cursor = cursor, classid=sys.argv[1])
+                sys.exit(0)
 
     except sqlite3.Error:
         #ASK ABOUT THE PRINT STATEMENTS
@@ -90,10 +91,7 @@ def main():
         sys.exit(1)
     except Exception as e:
         print(f"{sys.argv[0]}: {str(e)}", file=sys.stderr) 
-        sys.exit(2)
-    finally: 
-        if sqliteConnection:
-            sqliteConnection.close() 
+        sys.exit(2) 
 
 #-----------------------------------------------------------------------
 

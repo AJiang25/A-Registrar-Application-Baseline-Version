@@ -4,6 +4,7 @@ import sys
 import sqlite3
 import textwrap
 import argparse
+import contextlib
 
 #-----------------------------------------------------------------------
 def displayClasses(cursor, dept = None, num = None, area = None, title = None):   
@@ -56,15 +57,15 @@ def main():
     
     try:
         # Connects to the database and creates a curser connection 
-        sqliteConnection = sqlite3.connect('reg.sqlite')
-        cursor = sqliteConnection.cursor()
+        with sqlite3.connect('reg.sqlite') as connection:
+            with contextlib.closing(connection.cursor()) as cursor:
         
-        # Parses the stdin arguments
-        args = parser.parse_args()
-        
-        # Calls the displayClasses function 
-        displayClasses(cursor = cursor, dept = args.d, num = args.n, area = args.a, title = args.t)
-        sys.exit(0)
+                # Parses the stdin arguments
+                args = parser.parse_args()
+                
+                # Calls the displayClasses function 
+                displayClasses(cursor = cursor, dept = args.d, num = args.n, area = args.a, title = args.t)
+                sys.exit(0)
         
     # Normally your regoverviews.py must terminate with exit status 0. 
     # If it detects a database-related error, then it must terminate with exit status 1. 
@@ -77,9 +78,6 @@ def main():
     except Exception as e:
         print(f"{sys.argv[0]}: {str(e)}", file=sys.stderr) 
         sys.exit(2)
-    finally: 
-        if sqliteConnection:
-            sqliteConnection.close()
 #-----------------------------------------------------------------------
 
 if __name__ == '__main__':
