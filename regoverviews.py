@@ -6,7 +6,7 @@ import textwrap
 import argparse
 
 #-----------------------------------------------------------------------
-def displayClasses(curser, dept = None, num = None, area = None, title = None):   
+def displayClasses(cursor, dept = None, num = None, area = None, title = None):   
         conditions = []
         descriptors = []
         query = """
@@ -35,8 +35,8 @@ def displayClasses(curser, dept = None, num = None, area = None, title = None):
             query += "WHERE " + " AND ".join(conditions)
             
         query += "ORDER BY cr.dept ASC, cr.coursenum ASC, cl.classid ASC;"
-        curser.execute(query, descriptors)
-        ans = curser.fetchall()
+        cursor.execute(query, descriptors)
+        ans = cursor.fetchall()
 
         print('%5s %4s %6s %4s %s' % ("ClsId", "Dept", "CrsNum", "Area", "Title"))
         print('%5s %4s %6s %4s %s' % ("-----", "----", "------", "----", "-----"))
@@ -57,13 +57,13 @@ def main():
     try:
         # Connects to the database and creates a curser connection 
         sqliteConnection = sqlite3.connect('reg.sqlite')
-        curser = sqliteConnection.cursor()
+        cursor = sqliteConnection.cursor()
         
         # Parses the stdin arguments
         args = parser.parse_args()
         
         # Calls the displayClasses function 
-        displayClasses(curser = curser, dept = args.d, num = args.n, area = args.a, title = args.t)
+        displayClasses(cursor = cursor, dept = args.d, num = args.n, area = args.a, title = args.t)
         sys.exit(0)
         
     # Normally your regoverviews.py must terminate with exit status 0. 
@@ -78,7 +78,7 @@ def main():
         print(f"{sys.argv[0]}: {str(e)}", file=sys.stderr) 
         sys.exit(2)
     finally: 
-        if sqlLiteConnection:
+        if sqliteConnection:
             sqliteConnection.close()
 #-----------------------------------------------------------------------
 
