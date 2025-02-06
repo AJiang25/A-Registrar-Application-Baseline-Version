@@ -69,13 +69,14 @@ Room: {class_row[5]}"""
         
 #-----------------------------------------------------------------------  
 def main():
+    DATABASE_URL = 'file:red.sqlite?mode=ro'
+    
     parser = argparse.ArgumentParser(description = 'Registrar application: show details about a class')
     parser.add_argument('classid', help='the id of the class whose details should be shown')
-    
 
     try:
         # Connects to the database and creates a curser connection 
-        with sqlite3.connect('reg.sqlite') as connection:
+        with sqlite3.connect(DATABASE_URL, isolation_level = None, uri = True) as connection:
             with contextlib.closing(connection.cursor()) as cursor:
         
                 # Parses the stdin arguments

@@ -48,6 +48,8 @@ def displayClasses(cursor, dept = None, num = None, area = None, title = None):
         
 #-----------------------------------------------------------------------
 def main():
+    
+    DATABASE_URL = 'file:red.sqlite?mode=ro'
 
     parser = argparse.ArgumentParser(description = 'Registrar application: show overviews of classes')
     parser.add_argument('-d', type=str, metavar = 'dept', help ='show only those classes whose department contains dept')
@@ -57,7 +59,7 @@ def main():
     
     try:
         # Connects to the database and creates a curser connection 
-        with sqlite3.connect('reg.sqlite') as connection:
+        with sqlite3.connect(DATABASE_URL, isolation_level = None, uri = True) as connection:
             with contextlib.closing(connection.cursor()) as cursor:
         
                 # Parses the stdin arguments
@@ -65,7 +67,8 @@ def main():
                 
                 # Calls the displayClasses function 
                 displayClasses(cursor = cursor, dept = args.d, num = args.n, area = args.a, title = args.t)
-                sys.exit(0)
+                
+                # sys.exit(0)
         
     # Normally your regoverviews.py must terminate with exit status 0. 
     # If it detects a database-related error, then it must terminate with exit status 1. 
