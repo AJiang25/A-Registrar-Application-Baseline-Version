@@ -14,62 +14,55 @@ def displayClassInfo(cursor, classid = None):
         FROM classes 
         WHERE classid = ?
     """
+    course_query = """
+        SELECT DISTINCT c.courseid, cr.dept, cr.coursenum, c.area, c.title, c.descrip, c.prereqs, 
+        p.profname
+            FROM courses c
+            JOIN crosslistings cr ON c.courseid = cr.courseid 
+            JOIN coursesprofs cp ON c.courseid = cp.courseid
+            JOIN profs p ON cp.profid = p.profid
+            WHERE c.courseid = ?
+    """
+    
     cursor.execute(class_query, [classid])
     class_row = cursor.fetchone()
+    courseid = class_row[6]
     
-    course_query = """
-        
-    """
-    cursor.execute(course_query, [classid])
+    cursor.execute(course_query, [courseid])
     course_row = cursor.fetchone()
     
-    # query = """
-    #         SELECT DISTINCT cl.classid, cl.courseid, cl.days, cl.starttime, 
-    #         cl.endtime, cl.endtime, cl.bldg, cl.roomnum, c.area, c.title, 
-    #         c.descrip, c.prereqs, cr.dept, cr.coursenum, p.profname
-    #         FROM classes cl
-    #         JOIN crosslistings cr ON c.courseid = cr.courseid 
-    #         JOIN courses c ON c.courseid = cl.courseid
-    #         JOIN coursesprofs cp ON cr.courseid = cp.courseid
-    #         JOIN profs p ON cp.profid = p.profid
-    #         WHERE cl.classid = ?
-    #     """
-    # descriptor = f"{classid}"
-
-    # #query += "ORDER BY cr.dept ASC, cr.coursenum ASC, cl.classid ASC;"
-    # curser.execute(query, [descriptor])
-    # ans = curser.fetchall()
-
-    print('-------------')
-    print('Class Details')
-    print('-------------')
     classDetails = f"""Class Id: {class_row[0]}
 Days: {class_row[1]}
 Start time: {class_row[2]}
 End time: {class_row[3]}
 Building: {class_row[4]}
-Room: {class_row[5]}"""
-    print(classDetails)
+Room: {class_row[5]}
+"""
 
-    # labels = ["Class Id: ", "Days: ", "Start time: ", "End time: ", "Building: ", "Room: "]
-    # for row in ans:
-    #     res = (f"Class Id: {row[0]}")
-    #     res+= (f"Days: %s" % row[1])
-    #     res+= (f"Start time: %s" % row[2])
-    #     res+= (f"End time: %s" % row[3])
-    #     res+= (f"Building: %s" % row[4])
-    #     res+= (f"Room: %s" % row[5])
+    courseDetails = f"""Course Id: {course_row[0]}
+Dept and Number: {course_row[1]} {course_row[2]}
+Area: {course_row[3]}
+Title: {course_row[4]}
+Description: {course_row[5]}
+Prerequisites: {course_row[6]}
+Professor: {course_row[7]}
+"""
+    wrappedClassDetails = textwrap.fill(classDetails, width=72, break_long_words=False, replace_whitespace=False)
+    wrappedCourseDetails = textwrap.fill(courseDetails, width=72, break_long_words=False, replace_whitespace=False)
 
-        #res = f"Course information:{'\n'.join(ans[0])}"
-        #res = '%5s %4s %6s %4s %s %s %s %s %s %s %s %s %s %s %s' % (row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12], row[13], row[14])
-
+    print('-------------')
+    print('Class Details')
+    print('-------------')
+    print(wrappedClassDetails)
+    
     print('-------------')
     print('Course Details')
     print('-------------')
-        
+    print(wrappedCourseDetails)
+    
 #-----------------------------------------------------------------------  
 def main():
-    DATABASE_URL = 'file:red.sqlite?mode=ro'
+    DATABASE_URL = 'file:reg.sqlite?mode=ro'
     
     parser = argparse.ArgumentParser(description = 'Registrar application: show details about a class')
     parser.add_argument('classid', help='the id of the class whose details should be shown')
@@ -87,7 +80,6 @@ def main():
                 sys.exit(0)
 
     except sqlite3.Error:
-        #ASK ABOUT THE PRINT STATEMENTS
         print(f"{sys.argv[0]}: {str(e)}", file=sys.stderr)
         sys.exit(1)
     except Exception as e:

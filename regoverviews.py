@@ -49,7 +49,7 @@ def displayClasses(cursor, dept = None, num = None, area = None, title = None):
 #-----------------------------------------------------------------------
 def main():
     
-    DATABASE_URL = 'file:red.sqlite?mode=ro'
+    DATABASE_URL = 'file:reg.sqlite?mode=ro'
 
     parser = argparse.ArgumentParser(description = 'Registrar application: show overviews of classes')
     parser.add_argument('-d', type=str, metavar = 'dept', help ='show only those classes whose department contains dept')
