@@ -46,6 +46,23 @@ def main():
     exec_command(program, '-d COS -a qr -n 2 -t intro')
 
     # Add more tests here.
+    # Corner Case Testing
+    
+    # Coverage Testing 
+    
+    # Database Testing
+    # Execute the statement shutil.copy('reg.sqlite', 'regbackup.sqlite') 
+    # to make a backup copy of reg.sqlite.
+    # Execute the statement os.remove('reg.sqlite') to delete the reg.sqlite database. 
+    # Subsequent test should fail because the database is missing.
+    # Execute the statement shutil.copy('regflawed.sqlite', 'reg.sqlite') to copy some 
+    # "flawed" database file to reg.sqlite. The flawed database might be empty, or corrupted. 
+    # Subsequent tests should fail because the database indeed is flawed.
+    # Execute the statementshutil.copy('regbackup.sqlite', 'reg.sqlite') to copy the original 
+    # correct database back to reg.sqlite.
+    # If you include such tests in your testregoverviews.py (or testregdetails.py) program, 
+    # then make sure you submit your regflawed.sqlite file. Otherwise your testregoverviews.py 
+    # (or testregdetails.py) program will fail when your grader runs it.
 
 #-----------------------------------------------------------------------
 

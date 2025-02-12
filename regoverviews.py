@@ -67,15 +67,9 @@ def main():
                 
                 # Calls the displayClasses function 
                 displayClasses(cursor = cursor, dept = args.d, num = args.n, area = args.a, title = args.t)
+                sys.exit(0)
                 
-                # sys.exit(0)
-        
-    # Normally your regoverviews.py must terminate with exit status 0. 
-    # If it detects a database-related error, then it must terminate with exit status 1. 
-    # If it detects erroneous command-line arguments, 
-    # then it must terminate with exit status 2 — as is the default behavior of argparse.
     except sqlite3.Error:
-        #ASK ABOUT THE PRINT STATEMENTS
         print(f"{sys.argv[0]}: {str(e)}", file=sys.stderr)
         sys.exit(1)
     except Exception as e:
