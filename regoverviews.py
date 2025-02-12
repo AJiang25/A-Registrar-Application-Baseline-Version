@@ -67,7 +67,6 @@ def main():
                 
                 # Calls the displayClasses function 
                 displayClasses(cursor = cursor, dept = args.d, num = args.n, area = args.a, title = args.t)
-                sys.exit(0)
                 
     except sqlite3.Error:
         print(f"{sys.argv[0]}: {str(e)}", file=sys.stderr)

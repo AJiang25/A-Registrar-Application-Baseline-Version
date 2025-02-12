@@ -37,7 +37,9 @@ def displayClassInfo(cursor, classid = None):
     cursor.execute(class_query, [classid])
     class_row = cursor.fetchall()
     if not class_row:
-        raise ValueError("no class with classid " + str(classid) + " exists")
+        return false
+        #raise ValueError("no class with classid " + str(classid) + " exists")
+
     courseid = class_row[0][6]
     
     cursor.execute(course_query, [courseid])
@@ -134,9 +136,13 @@ def main():
                 # classid doesn't exist
                 
                 # Calls the displayClassInfo function 
-                displayClassInfo(cursor = cursor, classid=args.classid)
+                successful = displayClassInfo(cursor = cursor, classid=args.classid)
+                #error statement 
+                if not successful:
+                    #print(f"{sys.argv[0]}: {str(e)}", file=sys.stderr)
+                    print(f"no class with classid " + str(args.classid) + " exists")
+                    sys.exit(1)
                 
-                sys.exit(0)
     except sqlite3.Error:
         print(f"{sys.argv[0]}: {str(e)}", file=sys.stderr)
         sys.exit(1)

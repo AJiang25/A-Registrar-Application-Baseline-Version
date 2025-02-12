@@ -42,14 +42,56 @@ def main():
 
     program = sys.argv[1]
 
+    #Normal Case Testing
     exec_command(program, '-d COS')
     exec_command(program, '-d COS -a qr -n 2 -t intro')
+
+
+    exec_command(program, '')
+    exec_command(program, '-n 333')
+    exec_command(program, '-n b')
+    exec_command(program, '-a Qr')
+    exec_command(program, '-t intro')
+    exec_command(program, '-t science')
+    exec_command(program, '-t C_S')
+    exec_command(program, '-t c%S')
+    exec_command(program, '-d cos -n 3')
+    exec_command(program, '-t "Independent Study"')
+    exec_command(program, '-t "Independent Study "')
+    exec_command(program, '-t "Independent Study  "')
+    exec_command(program, '-t " Independent Study"')
+    exec_command(program, '-t "  Independent Study"')
+    exec_command(program, '-t=-c')
+
     
     # Corner Case Testing
     
+
+    #Error Case Testing 
+    exec_command(program, 'a qr')
+    exec_command(program, '-A qr')
+    exec_command(program, '"-a " qr')
+    exec_command(program, '-a qr st')
+    exec_command(program, '-a')
+    exec_command(program, '-a qr -d')
+    exec_command(program, '-a -d cos')
+    exec_command(program, '-x')
+
     # Coverage Testing 
+    exec_command(program, '-h')
     
     # Database Testing
+    try: 
+        shutil.copy('reg.sqlite', 'regbackup.sqlite')
+        os.remove('reg.sqlite')
+        exec_command(program, '-d ENG') 
+        shutil.copy('regflawed.sqlite', 'reg.sqlite')
+        exec_command(program, '-d ENG') 
+        shutil.copy('regbackup.sqlite', 'reg.sqlite')
+    except FileNotFoundError:
+        print('Database file not found, skipping database error tests.', file=sys.stderr)
+
+
     # Execute the statement shutil.copy('reg.sqlite', 'regbackup.sqlite') 
     # to make a backup copy of reg.sqlite.
     # Execute the statement os.remove('reg.sqlite') to delete the reg.sqlite database. 
