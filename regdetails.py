@@ -36,6 +36,8 @@ def displayClassInfo(cursor, classid = None):
     
     cursor.execute(class_query, [classid])
     class_row = cursor.fetchall()
+    if not class_row:
+        raise ValueError("no class with classid " + str(classid) + " exists")
     courseid = class_row[0][6]
     
     cursor.execute(course_query, [courseid])
@@ -120,23 +122,21 @@ def main():
     DATABASE_URL = 'file:reg.sqlite?mode=ro'
     
     parser = argparse.ArgumentParser(description = 'Registrar application: show details about a class')
-    parser.add_argument('classid', help='the id of the class whose details should be shown')
+    parser.add_argument('classid', type = int, help='the id of the class whose details should be shown')
 
     try:
         # Connects to the database and creates a curser connection 
         with sqlite3.connect(DATABASE_URL, isolation_level = None, uri = True) as connection:
             with contextlib.closing(connection.cursor()) as cursor:
-                # parser.add_argument(type = int)
+
                 # Parses the stdin arguments
                 args = parser.parse_args()
-                
-                # args.classid.isnumeric():
                 # classid doesn't exist
                 
                 # Calls the displayClassInfo function 
                 displayClassInfo(cursor = cursor, classid=args.classid)
+                
                 sys.exit(0)
-
     except sqlite3.Error:
         print(f"{sys.argv[0]}: {str(e)}", file=sys.stderr)
         sys.exit(1)
