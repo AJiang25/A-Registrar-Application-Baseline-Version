@@ -51,6 +51,7 @@ def main():
     exec_command(program, '9977')
     exec_command(program, '9012')
     exec_command(program, '10188')
+    exec_command(program, '9158')
 
     # Error Case Testing
     exec_command(program, '-h')
@@ -58,6 +59,7 @@ def main():
     exec_command(program, '8321 9032')
     exec_command(program, 'abc123')
     exec_command(program, '9034')
+    exec_command(program, '1000000000')
 
     # Database Testing
     try: 
