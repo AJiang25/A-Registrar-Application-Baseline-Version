@@ -5,6 +5,9 @@ import sqlite3
 import textwrap
 import argparse
 import contextlib
+#-----------------------------------------------------------------------
+def printWrapped(text):
+    print(textwrap.fill(text, width = 72, break_long_words=False, replace_whitespace=False, subsequent_indent=" "*3))
 
 #-----------------------------------------------------------------------
 
@@ -55,69 +58,29 @@ def displayClassInfo(cursor, classid = None):
     print('Class Details')
     print('-------------')
     for row in class_row:
-        print(f"Class Id: {row[0]}")
-        print(f"Days: {row[1]}")
-        print(f"Start time: {row[2]}")
-        print(f"End time: {row[3]}")
-        print(f"Building: {row[4]}")
-        print(f"Room: {row[5]}")
+        printWrapped(f"Class Id: {row[0]}")
+        printWrapped(f"Days: {row[1]}")
+        printWrapped(f"Start time: {row[2]}")
+        printWrapped(f"End time: {row[3]}")
+        printWrapped(f"Building: {row[4]}")
+        printWrapped(f"Room: {row[5]}")
     
     print('-------------')
     print('Course Details')
     print('-------------')
     
-    print(f"Course Id: {course_row[0]}")
+    printWrapped(f"Course Id: {course_row[0]}")
     for dept in dept_row: 
-        print(f"Dept and Number: {dept[0]} {dept[1]}")
-    print(f"Area: {course_row[1]}")
+        printWrapped(f"Dept and Number: {dept[0]} {dept[1]}")
+    printWrapped(f"Area: {course_row[1]}")
     
-    title = f"Title: {course_row[2]}"
-    wrappedTitle = textwrap.fill(title, width = 72, break_long_words=False, replace_whitespace=False, subsequent_indent=" "*3)
-    print(wrappedTitle)
-    
-    description = f"Description: {course_row[3]}"
-    wrappedDescription = textwrap.fill(description, width = 72, break_long_words=False, replace_whitespace=False, subsequent_indent=" "*3)
-    print(wrappedDescription)
-    
-    prerequisites = f"Prerequisities: {course_row[4]}"
-    wrappedPrerequisites = textwrap.fill(prerequisites, width = 72, break_long_words=False, replace_whitespace=False, subsequent_indent=" "*3)
-    print(wrappedPrerequisites)
+    printWrapped(f"Title: {course_row[2]}")
+    printWrapped(f"Description: {course_row[3]}")
+    printWrapped(f"Prerequisities: {course_row[4]}")
 
     for prof in prof_row: 
-        print(f"Professor: {prof[0]}")
-    
-    
-#     for row in class_row:
-#         classDetails = f"""Class Id: {row[0]}
-# Days: {row[1]}
-# Start time: {row[2]}
-# End time: {row[3]}
-# Building: {row[4]}
-# Room: {row[5]}
-# """
-#         wrappedClassDetails = textwrap.fill(classDetails, width = 72, break_long_words=False, replace_whitespace=False)
-
-#         print(wrappedClassDetails)
-
-#         course = f"""Course Id: {course_row[0]}"""
-#         for dept in dept_row: 
-#             f"""Dept and Number: {dept[1]} {dept[2]}"""
-#         course1 = f""" 
-#         Area: {course_row[1]}
-#         Title: {course_row[2]}
-#         Description: {course_row[3]}
-#         Prerequisites: {course_row[4]}
-#         """
-        
-        
-        # for prof in prof_row: 
-        #     f"""Professor: {prof[0]}"""
-        
-        # courseDetails = course + course1
-            
- #       wrappedCourseDetails = textwrap.fill(courseDetails, width = 72, break_long_words=False, replace_whitespace=False)
-        
- #       print(wrappedCourseDetails)
+        printWrapped(f"Professor: {prof[0]}")
+    return True
     
 #-----------------------------------------------------------------------  
 def main():
@@ -137,10 +100,10 @@ def main():
                 
                 # Calls the displayClassInfo function 
                 successful = displayClassInfo(cursor = cursor, classid=args.classid)
-                #error statement 
+                
+                # Error statement 
                 if not successful:
-                    #print(f"{sys.argv[0]}: {str(e)}", file=sys.stderr)
-                    print(f"no class with classid " + str(args.classid) + " exists")
+                    print(f"{sys.argv[0]}: no class with classid " + str(args.classid) + " exists")
                     sys.exit(1)
                 
     except sqlite3.Error:
