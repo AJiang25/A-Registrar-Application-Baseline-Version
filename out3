@@ -249,8 +249,9 @@ regdetails.py: no class with classid 1000000000 exists
 Exit status = 1
 ------------------------------------------------------------------------
 python regdetails.py -d ENG
-regdetails.py: unable to open database file
-Exit status = 1
+usage: regdetails.py [-h] classid
+regdetails.py: error: argument classid: invalid int value: 'ENG'
+Exit status = 2
 ------------------------------------------------------------------------
 python regdetails.py -d ENG
 usage: regdetails.py [-h] classid

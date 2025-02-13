@@ -90,14 +90,15 @@ def main():
                                      'Registrar application: show details about a class')
     parser.add_argument('classid', type = int, help =
                         'the id of the class whose details should be shown')
+    
 
     try:
+        # Parses the stdin arguments
+        args = parser.parse_args()
+        
         # Connects to the database and creates a curser connection
         with sqlite3.connect(DATABASE_URL, isolation_level = None, uri = True) as connection:
             with contextlib.closing(connection.cursor()) as cursor:
-
-                # Parses the stdin arguments
-                args = parser.parse_args()
 
                 # Calls the displayClassInfo function
                 successful = display_class_info(cursor = cursor, classid=args.classid)
@@ -108,12 +109,9 @@ def main():
                           str(args.classid) + " exists", file=sys.stderr)
                     sys.exit(1)
 
-    except sqlite3.Error as e:
-        print(f"{sys.argv[0]}: {str(e)}", file=sys.stderr)
-        sys.exit(1)
     except Exception as e:
         print(f"{sys.argv[0]}: {str(e)}", file=sys.stderr)
-        sys.exit(2)
+        sys.exit(1)
 
 #-----------------------------------------------------------------------
 

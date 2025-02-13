@@ -62,23 +62,20 @@ def main():
                         'show only those classes whose course title contains title')
 
     try:
+        # Parses the stdin arguments
+        args = parser.parse_args()
+        
         # Connects to the database and creates a curser connection
         with sqlite3.connect(DATABASE_URL, isolation_level = None, uri = True) as connection:
             with contextlib.closing(connection.cursor()) as cursor:
-
-                # Parses the stdin arguments
-                args = parser.parse_args()
 
                 # Calls the displayClasses function
                 display_classes(cursor = cursor, dept = args.d, num = args.n,
                                area = args.a, title = args.t)
 
-    except sqlite3.Error as e:
-        print(f"{sys.argv[0]}: {str(e)}", file=sys.stderr)
-        sys.exit(1)
     except Exception as e:
         print(f"{sys.argv[0]}: {str(e)}", file=sys.stderr)
-        sys.exit(2)
+        sys.exit(1)
 #-----------------------------------------------------------------------
 
 if __name__ == '__main__':
