@@ -30,6 +30,7 @@ Help we received from other people:
 2/3 Xinran (TA)
 2/5 Ambri (TA)
 2/12 Ambri (TA)
+2/13 Bob (Instructor)
 
 ----------------------------------------------------------------------------
 Time Spent:
