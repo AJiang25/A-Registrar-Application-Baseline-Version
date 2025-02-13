@@ -43,9 +43,32 @@ def main():
 
     program = sys.argv[1]
 
+    # Coverage Case Testing
     exec_command(program, '8321')
+    exec_command(program, '9032')
+    exec_command(program, '8293')
+    exec_command(program, '9977')
+    exec_command(program, '9012')
+    exec_command(program, '10188')
 
-    # Add more tests here.
+    # Error Case Testing
+    exec_command(program, '-h')
+    exec_command(program, '')
+    exec_command(program, '8321 9032')
+    exec_command(program, 'abc123')
+    exec_command(program, '9034')
+
+    # Database Testing
+    try: 
+        shutil.copy('reg.sqlite', 'regbackup.sqlite')
+        os.remove('reg.sqlite')
+        exec_command(program, '-d ENG') 
+        shutil.copy('regflawed.sqlite', 'reg.sqlite')
+        exec_command(program, '-d ENG') 
+        shutil.copy('regbackup.sqlite', 'reg.sqlite')
+    except FileNotFoundError:
+        print('Database file not found, skipping database error tests.', file=sys.stderr)
+
 
 if __name__ == '__main__':
     main()

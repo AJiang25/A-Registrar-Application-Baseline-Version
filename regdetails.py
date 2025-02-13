@@ -37,7 +37,7 @@ def displayClassInfo(cursor, classid = None):
     cursor.execute(class_query, [classid])
     class_row = cursor.fetchall()
     if not class_row:
-        return false
+        return False
         #raise ValueError("no class with classid " + str(classid) + " exists")
 
     courseid = class_row[0][6]

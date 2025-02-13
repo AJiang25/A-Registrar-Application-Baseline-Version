@@ -42,12 +42,9 @@ def main():
 
     program = sys.argv[1]
 
-    #Normal Case Testing
-    exec_command(program, '-d COS')
-    exec_command(program, '-d COS -a qr -n 2 -t intro')
-
-
+    #Coverage Case Testing
     exec_command(program, '')
+    exec_command(program, '-d COS')
     exec_command(program, '-n 333')
     exec_command(program, '-n b')
     exec_command(program, '-a Qr')
@@ -56,16 +53,13 @@ def main():
     exec_command(program, '-t C_S')
     exec_command(program, '-t c%S')
     exec_command(program, '-d cos -n 3')
+    exec_command(program, '-d COS -a qr -n 2 -t intro')
     exec_command(program, '-t "Independent Study"')
     exec_command(program, '-t "Independent Study "')
     exec_command(program, '-t "Independent Study  "')
     exec_command(program, '-t " Independent Study"')
     exec_command(program, '-t "  Independent Study"')
     exec_command(program, '-t=-c')
-
-    
-    # Corner Case Testing
-    
 
     #Error Case Testing 
     exec_command(program, 'a qr')
@@ -76,9 +70,6 @@ def main():
     exec_command(program, '-a qr -d')
     exec_command(program, '-a -d cos')
     exec_command(program, '-x')
-
-    # Coverage Testing 
-    exec_command(program, '-h')
     
     # Database Testing
     try: 
