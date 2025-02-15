@@ -1,3 +1,10 @@
+#!/usr/bin/env python
+
+#-----------------------------------------------------------------------
+# regoverviews.py
+# Authors: Arnold Jiang and Amanda Chan
+#-----------------------------------------------------------------------
+
 #-----------------------------------------------------------------------
 # imports
 import sys
@@ -64,7 +71,7 @@ def main():
     try:
         # Parses the stdin arguments
         args = parser.parse_args()
-        
+
         # Connects to the database and creates a curser connection
         with sqlite3.connect(DATABASE_URL, isolation_level = None, uri = True) as connection:
             with contextlib.closing(connection.cursor()) as cursor:

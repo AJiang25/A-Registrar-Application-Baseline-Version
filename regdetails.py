@@ -1,3 +1,11 @@
+#!/usr/bin/env python
+
+#-----------------------------------------------------------------------
+# regdetails.py
+# Authors: Arnold Jiang and Amanda Chan
+#-----------------------------------------------------------------------
+
+
 #-----------------------------------------------------------------------
 # imports
 import sys
@@ -90,12 +98,11 @@ def main():
                                      'Registrar application: show details about a class')
     parser.add_argument('classid', type = int, help =
                         'the id of the class whose details should be shown')
-    
 
     try:
         # Parses the stdin arguments
         args = parser.parse_args()
-        
+
         # Connects to the database and creates a curser connection
         with sqlite3.connect(DATABASE_URL, isolation_level = None, uri = True) as connection:
             with contextlib.closing(connection.cursor()) as cursor:
